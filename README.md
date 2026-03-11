@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 SmartRecruitMe - Plateforme Intelligente de Recrutement
 
 ## 📋 Description
@@ -233,3 +234,6 @@ Pour déployer en production:
 ---
 
 **Fait avec ❤️ par l'équipe ARIA**
+=======
+# SmartRecruitMe
+>>>>>>> 6562f6a49ab9da87ca7d05fe3640783440ac5a41
