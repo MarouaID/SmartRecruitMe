@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { recruiterAPI } from '../services/api';
 import { Briefcase, ArrowLeft, Plus, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Footer from '../components/Footer';
 
 const CreateJobOffer: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -229,6 +230,7 @@ const CreateJobOffer: React.FC = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

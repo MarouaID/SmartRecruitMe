@@ -5,6 +5,9 @@ import { Upload, Github, Briefcase, Star, MapPin, LogOut, TrendingUp, Award } fr
 import { useAuth } from '../context/AuthContext';
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
+import ChatbotWidget from '../components/ChatbotWidget';
+import NotificationBell from '../components/NotificationBell';
+import Footer from '../components/Footer';
 
 const CandidateDashboard: React.FC = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -86,15 +89,19 @@ const CandidateDashboard: React.FC = () => {
               </div>
               <h1 className="text-2xl font-bold text-gray-900">SmartRecruitMe</h1>
             </div>
-            <button
-              onClick={logout}
-              className="text-gray-600 hover:text-gray-900 transition-all"
-            >
-              <LogOut className="w-5 h-5" />
-            </button>
+            <div className="flex items-center space-x-4">
+              <NotificationBell />
+              <button
+                onClick={logout}
+                className="text-gray-600 hover:text-gray-900 transition-all"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
+      <ChatbotWidget />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -296,6 +303,7 @@ const CandidateDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

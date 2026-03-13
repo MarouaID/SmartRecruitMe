@@ -4,16 +4,12 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
@@ -33,6 +29,9 @@ export const candidateAPI = {
   getProfile: () => api.get('/api/candidates/profile'),
   getMatchingJobs: () => api.get('/api/candidates/matching-jobs'),
   analyzeGitHub: () => api.post('/api/candidates/analyze-github'),
+  chatCandidate: (data: { message: string }) => api.post('/api/chat/candidate', data),
+  getNotifications: () => api.get('/api/notifications/candidate'),
+  markNotificationsRead: (ids: number[]) => api.post('/api/notifications/mark-read', ids),
 };
 
 export const recruiterAPI = {
@@ -42,6 +41,10 @@ export const recruiterAPI = {
   matchCandidates: (jobId: number) => api.post(`/api/recruiters/job-offers/${jobId}/match-candidates`),
   getCandidateDetail: (candidateId: number) => api.get(`/api/recruiters/candidates/${candidateId}`),
   getDashboardStats: () => api.get('/api/recruiters/dashboard/stats'),
+  getDashboardAnalytics: () => api.get('/api/recruiters/dashboard/analytics'),
+  chatRecruiter: (data: { message: string }) => api.post('/api/chat/recruiter', data),
+  getNotifications: () => api.get('/api/notifications/recruiter'),
+  markNotificationsRead: (ids: number[]) => api.post('/api/notifications/mark-read', ids),
 };
 
 export default api;

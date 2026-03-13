@@ -1,8 +1,11 @@
+from collections import Counter
+from datetime import date
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
-from app.models import User, Recruiter, JobOffer, Candidate, CVAnalysis, GitHubAnalysis
+from app.models import User, Recruiter, JobOffer, Candidate, CVAnalysis, GitHubAnalysis, MatchResult, Notification
 from app.schemas import JobOfferCreate, JobOfferResponse
 from app.auth import get_current_recruiter
 from app.orchestrator import Orchestrator
@@ -99,6 +102,14 @@ def match_all_candidates_to_job(
         if cv_analysis:
             orchestrator.match_candidate_to_job(candidate.id, job_id, db)
             matched_count += 1
+
+    # Create a notification for the recruiter
+    notification = Notification(
+        user_id=current_user.id,
+        message=f"Votre matching pour l'offre '{job_offer.title}' a été exécuté avec {matched_count} candidats évalués.",
+    )
+    db.add(notification)
+    db.commit()
     
     return {
         "message": f"Matched {matched_count} candidates to job offer",
@@ -144,6 +155,53 @@ def get_candidate_detail(
             "github_score": github_analysis.github_score if github_analysis else 0
         } if github_analysis else None
     }
+
+@router.get("/dashboard/analytics")
+def get_dashboard_analytics(
+    current_user: User = Depends(get_current_recruiter),
+    db: Session = Depends(get_db)
+):
+    recruiter = db.query(Recruiter).filter(Recruiter.user_id == current_user.id).first()
+    if not recruiter:
+        raise HTTPException(status_code=404, detail="Recruiter profile not found")
+
+    match_results = (
+        db.query(MatchResult)
+        .join(JobOffer)
+        .filter(JobOffer.recruiter_id == recruiter.id)
+        .all()
+    )
+
+    # Applications over time (based on match result creation date)
+    counts = Counter((m.created_at.date() for m in match_results if m.created_at))
+    applications_over_time = [
+        {"date": d.isoformat(), "count": c} for d, c in sorted(counts.items())
+    ]
+
+    # Average scores
+    avg_score = (
+        sum((m.final_score or 0) for m in match_results) / max(len(match_results), 1)
+        if match_results
+        else 0
+    )
+
+    # Top skills in the candidate pool
+    skill_counts: Counter = Counter()
+    for m in match_results:
+        if m.matched_skills:
+            skill_counts.update([s for s in m.matched_skills if isinstance(s, str)])
+
+    top_skills = [
+        {"skill": skill, "count": count}
+        for skill, count in skill_counts.most_common(10)
+    ]
+
+    return {
+        "applications_over_time": applications_over_time,
+        "average_score": round(avg_score, 2),
+        "top_skills": top_skills,
+    }
+
 
 @router.get("/dashboard/stats")
 def get_dashboard_stats(

@@ -119,3 +119,15 @@ class MatchResult(Base):
     
     candidate = relationship("Candidate", back_populates="match_results")
     job_offer = relationship("JobOffer", back_populates="match_results")
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    message = Column(Text, nullable=False)
+    is_read = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User")

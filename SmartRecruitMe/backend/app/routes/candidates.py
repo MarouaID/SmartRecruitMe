@@ -4,7 +4,7 @@ from typing import List
 import os
 import shutil
 from app.database import get_db
-from app.models import User, Candidate, CVAnalysis, GitHubAnalysis, MatchResult, JobOffer
+from app.models import User, Candidate, CVAnalysis, GitHubAnalysis, MatchResult, JobOffer, Notification
 from app.auth import get_current_candidate
 from app.orchestrator import Orchestrator
 
@@ -44,7 +44,15 @@ def upload_cv(
         github_username=candidate.github_username,
         db=db
     )
-    
+
+    # Create a notification for the candidate
+    notification = Notification(
+        user_id=current_user.id,
+        message="Votre CV a été analysé avec succès. Découvrez vos scores dans le tableau de bord.",
+    )
+    db.add(notification)
+    db.commit()
+
     return {
         "message": "CV uploaded and analyzed successfully",
         "file_path": file_path,
@@ -134,5 +142,13 @@ def analyze_github(
         github_username=candidate.github_username,
         db=db
     )
-    
+
+    # Create a notification for the candidate
+    notification = Notification(
+        user_id=current_user.id,
+        message="Votre profil GitHub a été analysé. Consultez vos résultats sur le tableau de bord.",
+    )
+    db.add(notification)
+    db.commit()
+
     return result
