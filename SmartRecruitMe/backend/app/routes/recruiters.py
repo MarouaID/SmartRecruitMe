@@ -1,7 +1,7 @@
 from collections import Counter
 from datetime import date
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
@@ -9,6 +9,7 @@ from app.models import User, Recruiter, JobOffer, Candidate, CVAnalysis, GitHubA
 from app.schemas import JobOfferCreate, JobOfferResponse
 from app.auth import get_current_recruiter
 from app.orchestrator import Orchestrator
+from app.email_service import email_service
 
 router = APIRouter(prefix="/api/recruiters", tags=["Recruiters"])
 orchestrator = Orchestrator()
@@ -16,6 +17,7 @@ orchestrator = Orchestrator()
 @router.post("/job-offers", response_model=JobOfferResponse)
 def create_job_offer(
     job_data: JobOfferCreate,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_recruiter),
     db: Session = Depends(get_db)
 ):
@@ -38,7 +40,58 @@ def create_job_offer(
     db.commit()
     db.refresh(new_job)
     
+    # Envoyer des emails aux candidats en arrière-plan
+    background_tasks.add_task(
+        send_job_notifications,
+        job_id=new_job.id,
+        job_title=new_job.title,
+        company_name=recruiter.company_name,
+        job_description=new_job.description,
+        required_skills=new_job.required_skills,
+        location=new_job.location,
+        contract_type=new_job.contract_type,
+        db=db
+    )
+    
     return new_job
+
+def send_job_notifications(job_id: int, job_title: str, company_name: str,
+                          job_description: str, required_skills: List[str],
+                          location: str, contract_type: str, db: Session):
+    """
+    Fonction pour envoyer des notifications par email aux candidats
+    """
+    try:
+        # Récupérer tous les candidats
+        candidates = db.query(Candidate).all()
+        
+        candidates_data = []
+        for candidate in candidates:
+            user = db.query(User).filter(User.id == candidate.user_id).first()
+            if user and user.email:
+                candidates_data.append({
+                    "email": user.email,
+                    "name": candidate.full_name
+                })
+        
+        if candidates_data:
+            job_data = {
+                "title": job_title,
+                "company": company_name,
+                "description": job_description,
+                "required_skills": required_skills,
+                "location": location,
+                "contract_type": contract_type
+            }
+            
+            results = email_service.send_bulk_new_job_notifications(candidates_data, job_data)
+            print(f"📧 Emails envoyés: {results['sent']}/{results['total']}")
+            
+            if results['failed'] > 0:
+                print(f"⚠️  Échecs: {results['failed']} - {results['errors']}")
+    
+    except Exception as e:
+        print(f"❌ Erreur lors de l'envoi des notifications: {e}")
 
 @router.get("/job-offers", response_model=List[JobOfferResponse])
 def get_my_job_offers(
