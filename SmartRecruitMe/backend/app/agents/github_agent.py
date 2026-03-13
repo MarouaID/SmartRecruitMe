@@ -2,40 +2,23 @@ import requests
 from typing import Dict, List
 from datetime import datetime, timedelta
 from collections import Counter
-import redis
 import json
-from app.config import settings
 
 class GitHubAgent:
     def __init__(self):
         self.base_url = "https://api.github.com"
         self.headers = {}
-        if settings.GITHUB_TOKEN:
-            self.headers["Authorization"] = f"token {settings.GITHUB_TOKEN}"
-        
-        try:
-            self.redis_client = redis.from_url(settings.REDIS_URL)
-        except:
-            self.redis_client = None
+        # Redis est optionnel maintenant
+        self.redis_client = None
     
     def get_user_repos(self, username: str) -> List[Dict]:
-        cache_key = f"github_repos:{username}"
-        
-        if self.redis_client:
-            cached = self.redis_client.get(cache_key)
-            if cached:
-                return json.loads(cached)
-        
         url = f"{self.base_url}/users/{username}/repos"
         params = {"per_page": 100, "sort": "updated"}
         
         try:
             response = requests.get(url, headers=self.headers, params=params, timeout=10)
             if response.status_code == 200:
-                repos = response.json()
-                if self.redis_client:
-                    self.redis_client.setex(cache_key, 3600, json.dumps(repos))
-                return repos
+                return response.json()
         except Exception as e:
             print(f"Error fetching repos: {e}")
         

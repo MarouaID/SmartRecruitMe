@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import Optional, List, Dict
 from datetime import datetime
 from enum import Enum
@@ -8,12 +8,12 @@ class UserRole(str, Enum):
     RECRUITER = "recruiter"
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    email: str
     password: str
     role: UserRole
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: str
     password: str
 
 class Token(BaseModel):

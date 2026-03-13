@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserPlus, Mail, Lock, User, Building, Sparkles } from 'lucide-react';
+import { UserPlus, Mail, Lock, User, Building } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Logo from '../components/Logo';
 
 const Register: React.FC = () => {
   const [role, setRole] = useState<'candidate' | 'recruiter'>('candidate');
@@ -43,7 +44,18 @@ const Register: React.FC = () => {
         navigate('/recruiter/dashboard');
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.detail || 'Erreur lors de l\'inscription');
+      const errorDetail = error.response?.data?.detail;
+      let errorMessage = 'Erreur lors de l\'inscription';
+      
+      if (typeof errorDetail === 'string') {
+        errorMessage = errorDetail;
+      } else if (Array.isArray(errorDetail)) {
+        errorMessage = errorDetail.map((err: any) => err.msg || JSON.stringify(err)).join(', ');
+      } else if (errorDetail && typeof errorDetail === 'object') {
+        errorMessage = JSON.stringify(errorDetail);
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -56,8 +68,8 @@ const Register: React.FC = () => {
       <div className="relative z-10 w-full max-w-2xl">
         <div className="bg-white rounded-2xl shadow-2xl p-8 animate-fade-in">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full mb-4">
-              <Sparkles className="w-8 h-8 text-white" />
+            <div className="flex justify-center mb-4">
+              <Logo size={56} showText={false} />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Créer un compte</h1>
             <p className="text-gray-600">Rejoignez SmartRecruitMe aujourd'hui</p>

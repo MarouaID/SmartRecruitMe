@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogIn, Mail, Lock, Sparkles } from 'lucide-react';
+import { LogIn, Mail, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Logo from '../components/Logo';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -39,8 +40,8 @@ const Login: React.FC = () => {
       <div className="relative z-10 w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-2xl p-8 animate-fade-in">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full mb-4">
-              <Sparkles className="w-8 h-8 text-white" />
+            <div className="flex justify-center mb-4">
+              <Logo size={56} showText={false} />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">SmartRecruitMe</h1>
             <p className="text-gray-600">Connectez-vous à votre compte</p>

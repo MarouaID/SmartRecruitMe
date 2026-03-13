@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f0f13;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    gap: 60px;
+    padding: 40px;
+  }
+
+  .label {
+    color: #666;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .variant {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ─── LOGO CARD ─── */
+  .logo-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 48px 64px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  }
+
+  .logo-card.dark-bg {
+    background: #0d1b2a;
+  }
+
+  /* ─── ICON MARK ─── */
+  .icon-wrap {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  /* ─── WORDMARK ─── */
+  .wordmark {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .wordmark-name {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: #0d1b2a;
+  }
+
+  .wordmark-name .smart { color: #0d1b2a; }
+  .wordmark-name .recruit { color: #1a6ef5; }
+  .wordmark-name .me { color: #0d1b2a; }
+
+  .dark-bg .wordmark-name .smart { color: #fff; }
+  .dark-bg .wordmark-name .me { color: #fff; }
+
+  .wordmark-slogan {
+    font-size: 10.5px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #8a9ab0;
+    font-weight: 500;
+  }
+
+  /* ─── ICON ONLY VARIANT ─── */
+  .icon-only-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  /* ─── HORIZONTAL BANNER ─── */
+  .banner-card {
+    background: linear-gradient(135deg, #0d1b2a 0%, #0f2a4a 100%);
+    border-radius: 20px;
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    min-width: 480px;
+    justify-content: center;
+  }
+
+  .banner-wordmark-name {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+  }
+
+  .banner-wordmark-name .recruit-b { color: #4d9fff; }
+
+  .banner-slogan {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #5a7fa8;
+    font-weight: 500;
+    margin-top: 3px;
+  }
+
+  .divider-line {
+    width: 1px;
+    height: 48px;
+    background: rgba(255,255,255,0.15);
+    margin: 0 8px;
+  }
+
+  .tagline-text {
+    font-size: 13px;
+    color: #8ab0d4;
+    font-style: italic;
+    letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     VARIANT 1 — Logo principal (fond blanc)
+════════════════════════════════════════ -->
+<div class="variant">
+  <div class="label">Logo Principal — Fond Blanc</div>
+  <div class="logo-card">
+    <div class="icon-wrap">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer ring -->
+        <circle cx="32" cy="32" r="30" stroke="#1a6ef5" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.25"/>
+        <!-- Main circle bg -->
+        <circle cx="32" cy="32" r="26" fill="url(#grad1)"/>
+        <!-- Person silhouette -->
+        <circle cx="32" cy="24" r="7" fill="white" opacity="0.95"/>
+        <path d="M18 46 C18 38 24 34 32 34 C40 34 46 38 46 46" fill="white" opacity="0.95"/>
+        <!-- Checkmark badge -->
+        <circle cx="46" cy="18" r="9" fill="#0d1b2a"/>
+        <circle cx="46" cy="18" r="7.5" fill="#00c853"/>
+        <path d="M42 18 L45 21 L50 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- GitHub-style nodes -->
+        <circle cx="17" cy="32" r="3" fill="#1a6ef5" opacity="0.5"/>
+        <circle cx="47" cy="32" r="3" fill="#1a6ef5" opacity="0.5"/>
+        <line x1="20" y1="32" x2="26" y2="32" stroke="#1a6ef5" stroke-width="1.5" opacity="0.3"/>
+        <line x1="38" y1="32" x2="44" y2="32" stroke="#1a6ef5" stroke-width="1.5" opacity="0.3"/>
+        <defs>
+          <linearGradient id="grad1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1a6ef5"/>
+            <stop offset="100%" stop-color="#0a4bc4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="wordmark">
+      <div class="wordmark-name">
+        <span class="smart">Smart</span><span class="recruit">Recruit</span><span class="me">Me</span>
+      </div>
+      <div class="wordmark-slogan">Au-delà du CV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VARIANT 2 — Logo principal (fond sombre)
+════════════════════════════════════════ -->
+<div class="variant">
+  <div class="label">Logo Principal — Fond Sombre</div>
+  <div class="logo-card dark-bg">
+    <div class="icon-wrap">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="32" r="30" stroke="#4d9fff" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.2"/>
+        <circle cx="32" cy="32" r="26" fill="url(#grad2)"/>
+        <circle cx="32" cy="24" r="7" fill="white" opacity="0.95"/>
+        <path d="M18 46 C18 38 24 34 32 34 C40 34 46 38 46 46" fill="white" opacity="0.95"/>
+        <circle cx="46" cy="18" r="9" fill="#0d1b2a"/>
+        <circle cx="46" cy="18" r="7.5" fill="#00c853"/>
+        <path d="M42 18 L45 21 L50 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="17" cy="32" r="3" fill="#4d9fff" opacity="0.6"/>
+        <circle cx="47" cy="32" r="3" fill="#4d9fff" opacity="0.6"/>
+        <line x1="20" y1="32" x2="26" y2="32" stroke="#4d9fff" stroke-width="1.5" opacity="0.35"/>
+        <line x1="38" y1="32" x2="44" y2="32" stroke="#4d9fff" stroke-width="1.5" opacity="0.35"/>
+        <defs>
+          <linearGradient id="grad2" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1a6ef5"/>
+            <stop offset="100%" stop-color="#0a4bc4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="wordmark">
+      <div class="wordmark-name">
+        <span class="smart">Smart</span><span class="recruit">Recruit</span><span class="me">Me</span>
+      </div>
+      <div class="wordmark-slogan">Au-delà du CV</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VARIANT 3 — Icône seule (favicon / app icon)
+════════════════════════════════════════ -->
+<div class="variant">
+  <div class="label">Icône Seule — Favicon / App Icon</div>
+  <div class="icon-only-card">
+    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="30" stroke="#1a6ef5" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.25"/>
+      <circle cx="32" cy="32" r="26" fill="url(#grad3)"/>
+      <circle cx="32" cy="24" r="7" fill="white" opacity="0.95"/>
+      <path d="M18 46 C18 38 24 34 32 34 C40 34 46 38 46 46" fill="white" opacity="0.95"/>
+      <circle cx="46" cy="18" r="9" fill="#0d1b2a"/>
+      <circle cx="46" cy="18" r="7.5" fill="#00c853"/>
+      <path d="M42 18 L45 21 L50 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="17" cy="32" r="3" fill="#1a6ef5" opacity="0.5"/>
+      <circle cx="47" cy="32" r="3" fill="#1a6ef5" opacity="0.5"/>
+      <line x1="20" y1="32" x2="26" y2="32" stroke="#1a6ef5" stroke-width="1.5" opacity="0.3"/>
+      <line x1="38" y1="32" x2="44" y2="32" stroke="#1a6ef5" stroke-width="1.5" opacity="0.3"/>
+      <defs>
+        <linearGradient id="grad3" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a6ef5"/>
+          <stop offset="100%" stop-color="#0a4bc4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VARIANT 4 — Bannière présentation
+════════════════════════════════════════ -->
+<div class="variant">
+  <div class="label">Bannière — Présentation / Slide Header</div>
+  <div class="banner-card">
+    <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="30" stroke="#4d9fff" stroke-width="2.5" stroke-dasharray="6 3" opacity="0.2"/>
+      <circle cx="32" cy="32" r="26" fill="url(#grad4)"/>
+      <circle cx="32" cy="24" r="7" fill="white" opacity="0.95"/>
+      <path d="M18 46 C18 38 24 34 32 34 C40 34 46 38 46 46" fill="white" opacity="0.95"/>
+      <circle cx="46" cy="18" r="9" fill="#0d1b2a"/>
+      <circle cx="46" cy="18" r="7.5" fill="#00c853"/>
+      <path d="M42 18 L45 21 L50 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="17" cy="32" r="3" fill="#4d9fff" opacity="0.5"/>
+      <circle cx="47" cy="32" r="3" fill="#4d9fff" opacity="0.5"/>
+      <line x1="20" y1="32" x2="26" y2="32" stroke="#4d9fff" stroke-width="1.5" opacity="0.3"/>
+      <line x1="38" y1="32" x2="44" y2="32" stroke="#4d9fff" stroke-width="1.5" opacity="0.3"/>
+      <defs>
+        <linearGradient id="grad4" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a6ef5"/>
+          <stop offset="100%" stop-color="#0a4bc4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div>
+      <div class="banner-wordmark-name">
+        Smart<span class="recruit-b">Recruit</span>Me
+      </div>
+      <div class="banner-slogan">Au-delà du CV</div>
+    </div>
+    <div class="divider-line"></div>
+    <div class="tagline-text">Plateforme de recrutement<br>intelligente par IA</div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -12,19 +12,19 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS configuration
+# Include routers FIRST
+app.include_router(auth_router)
+app.include_router(candidates_router)
+app.include_router(recruiters_router)
+
+# CORS configuration AFTER routers
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Include routers
-app.include_router(auth_router)
-app.include_router(candidates_router)
-app.include_router(recruiters_router)
 
 @app.get("/")
 def root():
