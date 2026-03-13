@@ -15,7 +15,10 @@ class CVAgent:
             "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "Scikit-learn",
             "C++", "C#", ".NET", "PHP", "Ruby", "Go", "Rust", "Kotlin", "Swift",
             "Jenkins", "CI/CD", "Terraform", "Ansible", "Linux", "Bash", "PowerShell",
-            "Agile", "Scrum", "Jira", "Microservices", "DevOps", "Testing", "Jest", "Pytest"
+            "Agile", "Scrum", "Jira", "Microservices", "DevOps", "Testing", "Jest", "Pytest",
+            # ✅ Ajouts
+            "OpenCV", "NLP", "LLM", "Sentence-BERT", "N8N", "Scikit", "Pandas", "NumPy",
+            "Axios", "Redux", "Next.js", "Vite", "Firebase", "Supabase", "Prisma"
         ]
         
         self.soft_skills = [
@@ -46,17 +49,19 @@ class CVAgent:
     def extract_skills(self, text: str) -> List[str]:
         text_lower = text.lower()
         found_skills = []
-        
         for skill in self.tech_skills:
             if skill.lower() in text_lower:
                 found_skills.append(skill)
-        
         return list(set(found_skills))
     
     def extract_experience_years(self, text: str) -> int:
         patterns = [
-            r'(\d+)\+?\s*(?:years?|ans?)\s*(?:of\s*)?(?:experience|expérience)',
-            r'(?:experience|expérience)\s*(?:of\s*)?(\d+)\+?\s*(?:years?|ans?)',
+            # Anglais
+            r'(\d+)\+?\s*(?:years?)\s*(?:of\s*)?(?:experience)',
+            r'(?:experience)\s*(?:of\s*)?(\d+)\+?\s*(?:years?)',
+            # Français
+            r'(\d+)\+?\s*(?:ans?)\s*(?:d[e\']?\s*)?(?:expérience)',
+            r'(?:expérience)\s*(?:de\s*)?(\d+)\+?\s*(?:ans?)',
         ]
         
         for pattern in patterns:
@@ -64,23 +69,29 @@ class CVAgent:
             if matches:
                 return int(matches[0])
         
+        # Calcul par les dates
         year_pattern = r'\b(19|20)\d{2}\b'
         years = re.findall(year_pattern, text)
         if len(years) >= 2:
             years_sorted = sorted([int(y) for y in years])
-            return max(0, 2024 - years_sorted[0])
+            return max(0, 2025 - years_sorted[0])
         
         return 0
     
     def extract_education(self, text: str) -> List[Dict]:
         education = []
         education_keywords = [
-            "master", "bachelor", "licence", "ingénieur", "doctorat", "phd",
-            "bac", "diplôme", "degree", "university", "université", "école"
+            # Français
+            "master", "licence", "ingénieur", "doctorat", "bac", "diplôme",
+            "école", "université",
+            # Anglais
+            "bachelor", "degree", "university", "college", "phd", "mba",
+            "graduate", "undergraduate", "engineering", "computer science",
+            "b.sc", "m.sc", "b.s.", "m.s.",
         ]
         
         lines = text.split('\n')
-        for i, line in enumerate(lines):
+        for line in lines:
             line_lower = line.lower()
             for keyword in education_keywords:
                 if keyword in line_lower:
